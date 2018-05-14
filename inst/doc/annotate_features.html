@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Introduction</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h1>Introduction</h1>
+
+<p>Untargeted metabolomics goal is to quantify as metabolites as possible from a sample. We can use liquid chromatography coupled to mass spectrometry (LC/MS) for this purpose. It is a great challenge to transform LC/MS data into a profile of annotated metabolites that provides us meaningful biological information. A very important limitation to the annotation of metabolomic experiments is that the number of m/z processed signals, called features, is much bigger than the putative number of metabolites in a sample. The sources that produce multiple features from a single metabolite are multiple and variable. Natural isotopes as carbon isotopes produce isotope features. Ionization of metabolites produce the so called adducts of the metabolite, which are detected as different features depending on the ion adduct involved ([M+Na]+, [M+H]+, etc..). Apart from adduct features, ionization also produces metabolite fragmentation and other reactions as dimerizations, trimerizations, all of them being detected as multiple features. Being the reduction of multiple features to single metabolites a crucial step for the correct annotation of LC/MS experiments, we will show how to use <code>cliqueMS</code> to do so.   </p>
+
+<h1>Annotating features in LC/MS metabolomics</h1>
+
+<p><code>cliqueMS</code> annotates samples one by one. Annotation can be summarised in these three steps:</p>
+
+<ol>
+<li>Divide features into clique groups.</li>
+<li>Annotate isotopes.</li>
+<li>Annotate adducts and fragments</li>
+</ol>
+
+<p>Annotation steps are stored in an <code>anClique</code> S3 object. This object can be created from a <code>xcmsSet</code> object with processed m/z data from <code>xcms</code> package. First m/z raw data is processed:</p>
+
+<pre><code class="r">library(cliqueMS)
+mzfile &lt;- system.file(&quot;standards.mzXML&quot;, package = &quot;cliqueMS&quot;)
+msSet &lt;- xcms::xcmsSet(files = mzfile, method = &quot;centWave&quot;, ppm = 15, peakwidth = c(5,20), snthresh = 10)
+</code></pre>
+
+<p>Then we can create an <code>anClique</code> object:</p>
+
+<pre><code class="r">ex.anClique &lt;- anClique(msSet)
+summary(ex.anClique)
+#&gt; anClique object with 276 features
+#&gt; No computed clique groups
+#&gt; No isotope annotation
+#&gt; No adduct annotation
+</code></pre>
+
+<p>Here we see an <code>anClique</code> object before any annotation step. Features have not been grouped, isotopes and adducts are not annotated. Now let&#39;s see the three steps in detail.</p>
+
+<h2>Grouping features</h2>
+
+<p>Metabolites produce multiple features and very often they do not separate completely in the chromatography, so we observe coelution. This increases the difficulty of the annotation because many features coming from different metabolites might appear very close in the chromatogram. Before trying to annotate isotopes, adducts and fragments we want to make groups of features. Ideally, each group should include all the features produced by a single metabolite.</p>
+
+<h3>A network based algorithm to find groups of features</h3>
+
+<p><code>cliqueMS</code> uses a similarity network to find groups of features. Each feature is a node, and edges are weighted according to the cosine similarity between features:</p>
+
+<p>\(c_{ij}=\frac{\sum_k f_i(t_k)f_j(t_k)}{\| {f}_i\| \|{f}_j\|}\)</p>
+
+<p>Values from cosine similarity are useful to discriminate pairs of features that come from the same metabolite from pairs of features that come from different metabolites<sup>[1].</sup> We compute the cosine similarity using the profile mode of the data, having each feature a m/z value and vector intensities. All features are discretized into a vector of equal bins \(k\). Each vector position relative to retention time \(t_k\) contains the intensity of the feature \(i_k\) at that moment of the chromatography. Features with no coelution at all have a cosine similarity = 0. Edges with weight = 0 are not included in the network, nor nodes without any edge.</p>
+
+<p>Once we have the network, it is time to divide the features into groups. <code>cliqueMS</code> assumes that the similarity between all features that come from the same metabolite must be \(c_{ij} > 0\). Additionally, similarity values between features of the same metabolite should be generally higher than between features of different metabolites. With this information, <code>cliqueMS</code> uses a probabilistic model to find the feature groups. This model find cliques, fully connected components so for all nodes \(c_{ij} > 0\). The similarity inside this cliques should be higher than the similarity between features outside the clique. <code>cliqueMS</code> estimates the log-likelihood for a particular assignment of features into different clique groups. For details in the probabilistic model and the log-likelihood maximisation see [1]. The log-likelihood maximisation procedure can be summarised in the following way:</p>
+
+<ol>
+<li><code>cliqueMS</code> starts with each node as a different clique group.</li>
+<li>Alternate between merge cliques and move nodes from cliques if the new assignment has a bigger log-likelihood.</li>
+<li>When log-likelihood cannot be increased in 2, try to move each node from its clique to another, (&ldquo;Kernighan-Lin&rdquo;).</li>
+<li>Final group assignment for all features.</li>
+</ol>
+
+<p>Now let&#39;s see how to find this groups with <code>getCliques</code>.</p>
+
+<h3>getCliques</h3>
+
+<p>With the function <code>getCliques</code> we assign clique groups to our features. This function creates the network of similarity and then computes the clique groups. As input data it uses a <code>xcmsSet</code> object. <code>getCliques</code> outputs an <code>anClique</code> S3 object, which will be used to store all annotation steps.</p>
+
+<pre><code class="r">library(cliqueMS)
+set.seed(2)
+ex.cliqueGroups &lt;- getCliques(msSet, filter = TRUE)
+#&gt; Creating anClique object
+#&gt; Creating network
+#&gt; Features filtered: 1 
+#&gt; Computing Cliques
+#&gt; Beggining value of logl is -1114.05 
+#&gt; Aggregate cliques done, with 525 rounds
+#&gt; Kernighan-Lin done with 2 rounds
+#&gt; Finishing value of logl is -263.766
+summary(ex.cliqueGroups)
+#&gt; anClique object with 275 features
+#&gt; Features have been splitted into 69 cliques
+#&gt; No isotope annotation
+#&gt; No adduct annotation
+</code></pre>
+
+<p>As we see from the printed messages, the function <code>getCliques</code> first creates a network, and then it filters features if parameter <code>filter = TRUE</code>. As m/z signal processing algorithms may produce two artefact features from a single one, it is recommended to set <code>filter = TRUE</code> to drop repeated features. This filter only drops features with similarity &gt; 0.99, and equal values of m/z, retention time and maximum intensity, defined by the relative error parameters <code>mzerror</code>, <code>rtdiff</code> and <code>intdiff</code>. From the output of the function we see the computed log-likelihood at the beginning, when each feature is in a different clique and the computed log-likelihood at the end of the process.
+If we now look at the <code>summary</code> of the resulting <code>anClique</code> object, we see that the features have been grouped into 69 clique groups. Now we can annotate isotopes.</p>
+
+<h2>Annotating isotopes</h2>
+
+<p><code>cliqueMS</code> annotates isotopes within each clique group. <code>cliqueMS</code> searches pairs of features than can be carbon isotopes based in these two rules:</p>
+
+<ol>
+<li>The monoisotopic feature must be more intense than the isotopic feature.</li>
+<li>The mass difference between the features must be the difference of a carbon isotope \(\pm\) an error.</li>
+</ol>
+
+<p>Isotopes are annotated with the function <code>getIsotopes</code>. This function finds pairs of features that fulfil the conditions of an isotope. Then it creates the isotope annotation after removing incoherences like two monoisotopic masses for one isotope, two second isotopes for one first isotope, etc&hellip; In all this cases the removed pair is the one with smaller similarity. The use of the function is pretty straightforward:</p>
+
+<pre><code class="r">ex.Isotopes &lt;- getIsotopes(ex.cliqueGroups, ppm = 10)
+#&gt; Computing isotopes
+#&gt; Updating anClique object
+summary(ex.Isotopes)
+#&gt; anClique object with 275 features
+#&gt; Features have been splitted into 69 cliques
+#&gt; 83 Features are isotopes
+#&gt; No adduct annotation
+</code></pre>
+
+<p>Parameter <code>ppm</code> is important because it defines in ppm units the range of the accepted relative error. Once isotopes are annotated we can annotate adducts and fragments.</p>
+
+<h2>Annotating adducts and fragments</h2>
+
+<h3>Putative adducts</h3>
+
+<p>The last step of ´cliqueMS´ is to annotate adducts. Each feature has a m/z value that is the neutral mass of the metabolite plus the mass of the ion adduct (or fragmentation ion adduct). The neutral mass is an unknown value, but the ion adduct mass is to some degree known as many ion adducts are known. The list of possible adducts should be given as input to <code>cliqueMS</code> by the user or either use one of the default adduct lists. Here is how it looks the positive default list:</p>
+
+<pre><code class="r">head(positive.adinfo)
+#&gt;         adduct log10freq      massdiff nummol charge
+#&gt; 1 [M+2H-NH3]2+ -3.512904 -15.012016600      1      2
+#&gt; 2      [Cat]3+ -3.512904  -0.001645737      1      3
+#&gt; 3      [Cat]2+ -3.512904  -0.001040400      1      2
+#&gt; 4    [Cat+H]2+ -3.336813   1.006178842      1      2
+#&gt; 5     [M+2H]2+ -1.813934   2.014552000      1      2
+#&gt; 6   [M+H+Na]2+ -2.699991  23.996494000      1      2
+</code></pre>
+
+<p>Which contains the name of the adduct, the log10 frequency of that adduct, the mass of the adduct, the number of molecules involved and the charge (see [1] for details in how default lists were made). With the adduct list we can obtain neutral masses.</p>
+
+<h3>Scoring neutral masses</h3>
+
+<p><code>cliqueMS</code> searches in each clique for groups of two or more features compatible with a neutral mass and two or more adducts in the adduct list. Neutral masses with only one adduct are not included in the scoring. Once we have all possible neutral masses and their corresponding adducts, the algorithm tries combinations of different adducts and neutral masses to find the most plausible annotation. All combinations are scored and the top five annotations are returned. The scoring is based on the following criteria:</p>
+
+<ol>
+<li>The log-frequency of the adduct</li>
+<li>Minimum number of empty features</li>
+<li>Minimum number of neutral masses</li>
+</ol>
+
+<p>The computed score (which is a logarithmic score) is the sum of the adducts log-frequencies plus the number of empty features (which has a log-frequency smaller than the least frequent adduct) and the number of neutral masses. Within a clique group, it may happen than the annotation of some features is independent from the annotation of some other features, as there is not a single neutral mass with adducts in both groups of features. In those cases, the clique group is splitted in non overlapping groups, called annotation groups. This is common in big cliques. The reported scores refer to annotation groups. The score is useful to see how probable is the first annotation compared to second annotation, third annotation, etc&hellip; within an annotation group, but it is not intended to compare annotations between different annotation groups because the score will be smaller when the number of features in the group is bigger. To find annotation <code>cliqueMS</code> uses the function <code>getAnnotation</code>.</p>
+
+<h3>getAnnotation</h3>
+
+<p>Here is an example of annotating adducts with <code>getAnnotation</code></p>
+
+<pre><code class="r">ex.Adducts &lt;- getAnnotation(ex.Isotopes, ppm = 10,
+       adinfo = positive.adinfo, polarity = &quot;positive&quot;)
+#&gt; Computing annotation
+#&gt; Annotation computed, updating peaklist
+summary(ex.Adducts)
+#&gt; anClique object with 275 features
+#&gt; Features have been splitted into 69 cliques
+#&gt; 83 Features are isotopes
+#&gt; 176 features annotated
+</code></pre>
+
+<p>As we see from the <code>summary</code> output, 178 of 275 features have annotation. Function <code>getAnnotation</code> requires as input an adduct list, the parameter <code>adinfo</code>. Users can use the default adduct list <code>positive.adinfo</code> for positive charged adducts and <code>and negative.adinfo</code> for negative charged adducts. <code>polarity</code> must be set, either to <code>positive</code> or <code>negative</code>. Lots of neutral masses are found when the clique groups have many features. In those cases, scoring all annotations could take much time as there are many possible combinations. To prevent this, neutral masses that likely will be in the final top annotations are selected and annotation is computed quickly. The selected masses have the highest frequency adducts and the largest number of adducts.
+For each clique group, all neutral masses are ordered depending on their score. A number of top scoring masses controlled by <code>topmasstotal</code> parameter are selected. Additionally and for every feature, the ordered list of scored neutral masses is subsetted to only the neutral masses with adducts in that feature. Then a number of top scoring masses set by <code>topmassf</code> parameter are selected in each sublist, and added to the set of selected masses. After the mass selection, and in cases of big cliques (size of a &ldquo;big&rdquo; clique is defined by parameter <code>sizeanG</code>), annotation groups are splitted again in new non overlapping groups just taking into account the set of selected neutral masses.</p>
+
+<p><code>getCliques</code> stores the annotation in the <code>peaklist</code> of the <code>anClique</code> object. Here we can see an overview of some annotated features in our sample:</p>
+
+<pre><code class="r">features.clique6 &lt;- ex.Adducts$cliques[[6]]
+head(ex.Adducts$peaklist[features.clique6,
+    c(&quot;an1&quot;,&quot;mass1&quot;,&quot;an2&quot;, &quot;mass2&quot;, &quot;an3&quot;, &quot;mass3&quot;, &quot;an4&quot;, &quot;mass4&quot;, &quot;an5&quot;, &quot;mass5&quot;)], n = 10)
+#&gt;           an1    mass1      an2    mass2        an3    mass3        an4
+#&gt; 37                  NA   [M+K]+ 242.0805     [M+K]+ 242.0805  [M+H+K]2+
+#&gt; 38     [M+H]+ 484.1610  [2M+H]+ 242.0805 [M+H-H2O]+ 502.1711 [M+H-NH3]+
+#&gt; 39   [M+NH4]+ 484.1610                NA                  NA     [M+H]+
+#&gt; 40     [M+K]+ 484.1610  [2M+K]+ 242.0805 [M+K-H2O]+ 502.1711     [M+H]+
+#&gt; 41   [Cat-H]+ 105.0583  [Cat]2+ 208.1014    [Cat]2+ 208.1014   [Cat-H]+
+#&gt; 42  [M+H-OH]+ 216.0768   [M+H]+ 199.0745     [M+H]+ 199.0745     [M+H]+
+#&gt; 43                  NA                NA [M+H+H2O]+ 282.0728 [M+H+H2O]+
+#&gt; 44     [Cat]+ 118.0649   [Cat]+ 118.0649     [Cat]+ 118.0649     [Cat]+
+#&gt; 45 [Cat-H2O]+ 216.0768 [Cat-H]+ 199.0745   [Cat-H]+ 199.0745   [Cat-H]+
+#&gt; 46  [M+2Na]2+ 484.1610  [M+Na]+ 242.0805 [M+H-H2O]+ 282.0728 [M+H-H2O]+
+#&gt;       mass4        an5    mass5
+#&gt; 37 522.1188  [M+H+K]2+ 522.1188
+#&gt; 38 501.1876    [M+Na]+ 462.1791
+#&gt; 39 501.1876                  NA
+#&gt; 40 522.1188     [M+H]+ 522.1188
+#&gt; 41 105.0583   [Cat-H]+ 105.0583
+#&gt; 42 199.0745     [M+H]+ 199.0745
+#&gt; 43 282.0728 [M+H+H2O]+ 282.0728
+#&gt; 44 118.0649     [Cat]+ 118.0649
+#&gt; 45 199.0745   [Cat-H]+ 199.0745
+#&gt; 46 282.0728 [M+H-H2O]+ 282.0728
+</code></pre>
+
+<p>Now we have obtained the neutral mass and the adduct annotation for our features. We could use the neutral mass together with the retention time and MS/MS data to annotate more confidently some of these metabolites. We also know how many features in the dataset are isotopes. Finally, we have achieved a reduction in the complexity of our the dataset, from many features to a signficant smaller number annotated neutral masses that have different adducts and isotopes.</p>
+
+<blockquote>
+<p>1 - &ldquo;AddClique, a network-based algorithm for the identification of adducts in LC/MS metabolomics&rdquo;, Senan O, Yanes O, Sales-Pardo M, Guimerà R. <em>et al</em>, Metabolomics Congress 2016 Dublin.</p>
+</blockquote>
+
+</body>
+
+</html>
