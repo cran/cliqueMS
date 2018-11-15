@@ -270,11 +270,11 @@ ex.cliqueGroups &lt;- getCliques(msSet, filter = TRUE)
 #&gt; Creating anClique object
 #&gt; Creating network
 #&gt; Features filtered: 1 
-#&gt; Computing Cliques
+#&gt; Computing cliques
 #&gt; Beggining value of logl is -1114.05 
-#&gt; Aggregate cliques done, with 525 rounds
-#&gt; Kernighan-Lin done with 2 rounds
-#&gt; Finishing value of logl is -263.766
+#&gt; Aggregate cliques done, with 386 rounds
+#&gt; Kernighan-Lin done with 3 rounds
+#&gt; Finishing value of logl is -253.498
 summary(ex.cliqueGroups)
 #&gt; anClique object with 275 features
 #&gt; Features have been splitted into 69 cliques
@@ -350,7 +350,7 @@ summary(ex.Adducts)
 #&gt; anClique object with 275 features
 #&gt; Features have been splitted into 69 cliques
 #&gt; 83 Features are isotopes
-#&gt; 176 features annotated
+#&gt; 177 features annotated
 </code></pre>
 
 <p>As we see from the <code>summary</code> output, 178 of 275 features have annotation. Function <code>getAnnotation</code> requires as input an adduct list, the parameter <code>adinfo</code>. Users can use the default adduct list <code>positive.adinfo</code> for positive charged adducts and <code>and negative.adinfo</code> for negative charged adducts. <code>polarity</code> must be set, either to <code>positive</code> or <code>negative</code>. Lots of neutral masses are found when the clique groups have many features. In those cases, scoring all annotations could take much time as there are many possible combinations. To prevent this, neutral masses that likely will be in the final top annotations are selected and annotation is computed quickly. The selected masses have the highest frequency adducts and the largest number of adducts.

@@ -10,9 +10,12 @@ filterIso <- function(isodf, network) {
     isodf$pfeature = netpfeature
     isodf$ifeature = netifeature
     isodfSorted <- isodf[,c("pfeature", "ifeature")]
-    isodfSorted <- (apply(isodfSorted, 1 , sort, decreasing = F))
+    isodfSorted <- do.call(rbind,lapply(1:nrow(isodfSorted),
+                                        function(x) {
+                                            sort(isodfSorted[x,]) }
+                                        ))
     isodf$weight <- igraph::E(network,
-                              P = as.numeric(isodfSorted))$weight
+                              P = as.numeric(t(isodfSorted)))$weight
     #as.numeric is important to acces correct weight values
     #First filter isotopes pointing to two different parents
     inlinks <- as.numeric(names(
@@ -81,7 +84,27 @@ isoGrade <- function(isonet) {
     return(grades)
 }
 
-isonetAttributes <- function(isolist) {
+correctGrade <- function(isoTable, maxGrade) {
+    maxCluster <- max(isoTable$cluster)
+    clusters <- unique(isoTable$cluster)
+    res <- do.call(rbind,lapply(1:length(clusters), function(x) {
+        cluster <- clusters[x]
+        cpos <- isoTable[isoTable$cluster == x,]
+        goodP <- cpos[cpos$grade <= maxGrade,]
+        badP <- cpos[cpos$grade > maxGrade,]
+        if(nrow(badP) > 1) {
+            maxrowN <- max(as.numeric(rownames(badP)))
+            badP$cluster = maxCluster + maxrowN + 1
+            badP$grade = 0:(nrow(badP)-1)
+            goodP = rbind(badP, goodP)
+        }
+        goodP
+    }))
+    return(res)
+}
+            
+
+isonetAttributes <- function(isolist, maxGrade) {
     # Function to set the node attributes for each isotope:
     # grade, charge, and community
     # First assign grade (for info look isoGrade function)
@@ -110,6 +133,10 @@ isonetAttributes <- function(isolist) {
         grade = igraph::V(isolist$network)$grade,
         cluster = igraph::V(isolist$network)$cluster
     )
+    # Fourth, correct the grade
+    while(max(isoTable$grade) > maxGrade) {
+        isoTable <- correctGrade(isoTable, maxGrade)
+    }
     return(isoTable)
 }
 
@@ -179,36 +206,40 @@ getIsotopes <- function(anclique, maxCharge = 3,
             isolist <- filterIso(isodf, anclique$network)
             if( nrow(isolist$isodf) > 0 ) {
             # write a table with feature, charge, grade and cluster 
-                iTable <- isonetAttributes(isolist)
-            }
+                iTable <- isonetAttributes(isolist, maxGrade)
+            } else {
+                iTable = NULL}
         } else {
             iTable = NULL
         }
         iTable
     })
+    # If there are no isotopes in all dataset
+    if( length(listofisoTable) ==
+       sum(sapply(listofisoTable, is.null)) ) {
+           isoTable <- matrix(c(NA,NA,NA,NA), nrow = 1)
+           colnames(isoTable) <- c("feature","charge","grade","cluster")
+           anclique$peaklist$isotope <- rep("M0",
+                                            nrow(anclique$peaklist))
+           } else {
     # The cluster label is inconsistent between all isotopes found
     # let's correct for avoiding confusions
-    posMax <- 1
-    while(is.null(listofisoTable[[posMax]])) {
-        posMax = posMax + 1
-    }
-    maxVal <- max(listofisoTable[[posMax]]$cluster)
-    for( i in 2:length(listofisoTable) ) {
-        if( !is.null(listofisoTable[[i]]) ) {
-            listofisoTable[[i]]$cluster =
-                listofisoTable[[i]]$cluster + maxVal
-            maxVal = max(listofisoTable[[i]]$cluster)
-        }
-    }
+               listofisoTable <- listofisoTable[!sapply(listofisoTable, is.null)]
+               maxC <- max(listofisoTable[[1]]$cluster)
+               for(i in 2:length(listofisoTable)) {
+                   listofisoTable[[i]]$cluster = listofisoTable[[i]]$cluster + maxC + 1
+                   maxC <- max(listofisoTable[[i]]$cluster)
+               }
+               isoTable <- do.call(rbind, listofisoTable)
+               rownames(isoTable) <- 1:nrow(isoTable)
+               # Change the peaklist adding isotope column
+               anclique$peaklist <- addIso2peaklist(isoTable,
+                                                    anclique$peaklist)
+           }
     cat("Updating anClique object\n")
-    isoTable <- do.call(rbind, listofisoTable)
-    rownames(isoTable) <- 1:nrow(isoTable)
     # Now change status of isotopes at anclique object
     anclique$isoFound <- TRUE
     # Put new isotopes table
     anclique$isotopes <- isoTable
-    # And change the peaklist adding isotope column
-    anclique$peaklist <- addIso2peaklist(isoTable,
-                                        anclique$ peaklist)
     return(anclique)
 }

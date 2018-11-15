@@ -2,8 +2,8 @@ Package: cliqueMS
 Type: Package
 Title: Annotation of Isotopes, Adducts and Fragmentation Adducts for
         in-Source LC/MS Metabolomics Data
-Version: 0.2.1
-Date: 2018-05-05
+Version: 0.2.3
+Date: 2018-11-14
 Authors@R: c(
 	   person("Oriol", "Senan Campos", email = "oriol.senan@urv.cat", role = c("aut","cre")),
 	   person("Antoni", "Aguilar-Mogas", role = "aut"),
@@ -24,11 +24,11 @@ BugReports: https://github.com/osenan/cliqueMS/issues
 SystemRequirements: C++11
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Suggests: knitr, rmarkdown, testthat
 VignetteBuilder: knitr
 NeedsCompilation: yes
-Packaged: 2018-05-14 11:16:42 UTC; master
+Packaged: 2018-11-14 23:32:50 UTC; master
 Author: Oriol Senan Campos [aut, cre],
   Antoni Aguilar-Mogas [aut],
   Jordi Capellades [aut],
@@ -38,4 +38,4 @@ Author: Oriol Senan Campos [aut, cre],
   Marta Sales-Pardo [aut]
 Maintainer: Oriol Senan Campos <oriol.senan@urv.cat>
 Repository: CRAN
-Date/Publication: 2018-05-14 12:17:36 UTC
+Date/Publication: 2018-11-15 05:50:03 UTC
