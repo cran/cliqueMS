@@ -28,16 +28,21 @@ class annotDF {
  public:
   std::vector<double> mz;
   std::vector<int> features;
+  std::vector<int> charge;
 };
 
 annotDF readDF(Rcpp:: DataFrame dfclique)
 {
   annotDF annotdf;
+  // read data.frame from R
   Rcpp::NumericVector vmz = dfclique["mz"];
   Rcpp::NumericVector vfeature = dfclique["feature"];
+  Rcpp::NumericVector vcharge = dfclique["charge"];
+  // copy data.frame data to c++ annotDF class
   for(int index = 0; index < vmz.size(); index++) {
     annotdf.mz.push_back(vmz[index]);
     annotdf.features.push_back(vfeature[index]);
+    annotdf.charge.push_back(vcharge[index]);
   }
   return annotdf;
 }
@@ -90,8 +95,10 @@ class annotData {
 
 std::unordered_map <int, std::string> getAlladducts(double mass, double tol, int idn, adInfo currentAdd, annotDF& mzdf, rawadList rList) {
   unsigned int idnmass = idn; //index to start the search in the row of adducts
+  int isoCharge; // charge set to isotopic features
   double mapmassDiff, mzDiff, error, lowerbound, upperbound;
-  adInfo adI;
+  adInfo adI, adItest;
+  std::string addTest;
   std::map <double,std::string> massMap;
   std::unordered_map <int, std::string> adduMap;
   for(std::vector <std::string>::iterator ita = rList.addorder.begin(); ita!= rList.addorder.end() ; ita++) {
@@ -112,11 +119,25 @@ std::unordered_map <int, std::string> getAlladducts(double mass, double tol, int
   // search for all adducts of the mass in the df
   for(unsigned int idnloop = idnmass; idnloop < mzdf.mz.size() ; idnloop++ ) {
     mzDiff = mzdf.mz[idnloop] -mass;
+    isoCharge = mzdf.charge[idnloop];
   // if massdifference is bigger than the largest mass difference in the adduct list
   // it is not possible to find more adducts
     std::map<double,std::string>::iterator itm;
       for( itm = lowerboundp; itm != massMap.end() ; itm++ ) {
-	error = std::abs(mzDiff - itm->first)/mass;
+	if(isoCharge != 0) {
+	  addTest = itm->second;
+	  adItest = rList.rawlist[addTest];
+	  if(isoCharge == std::abs(adItest.charge)) {
+	    // if testing add charge is equal to feature charge
+	    error = std::abs(mzDiff - itm->first)/mass;
+	  } else {
+	    // if not, this annotation is not possible
+	    error = 10*tol*sqrt(2);
+	  }
+	} else {
+	  // if there is no charge set, proceed as normal
+	  error = std::abs(mzDiff - itm->first)/mass;
+	}
     // if the error is smaller than the tolerance, accept that adduct
 	if( error < tol*sqrt(2) )
 	  adduMap[mzdf.features[idnloop]] = itm->second;
@@ -250,9 +271,11 @@ std::unordered_set<double> getRepMasses(int anGroup, annotData& annotD, double f
 	// if the error is smaller than the filter, we have to check the adducts
 	if( error < filter*sqrt(2) ) {
 	  if(m2 > m1) {
-	    pairmass = std::make_pair(m1,m2);
+	    pairmass.first = m1;
+	    pairmass.second = m2;
 	  } else {
-	    pairmass = std::make_pair(m2,m1); //m1 is bigger
+	    pairmass.first = m1;
+	    pairmass.second = m2;
 	  }
 	  badmPair.insert(pairmass);
 	}
@@ -331,12 +354,23 @@ annotData getannotData(rawadList rList, annotDF& mzdf, double tol = 0.00001, dou
   
   std::pair<int, std::string> massPair;
   double mz, mass;
+  int isocharge;
   std::unordered_map<int,std::string> adduMap;
   for(idn = 0; idn < (mzdf.mz.size() -1); idn++) {
     mz = mzdf.mz[idn]; // assign m/z value for current idn position
+    isocharge = mzdf.charge[idn]; // assign charge value, only available for isotopic features
     for(std::vector<std::string>::iterator ita = rList.addorder.begin(); ita != rList.addorder.end(); ita++) {
       currentAdd = rList.rawlist[*ita];
-      mass = (mz*std::abs(currentAdd.charge) - currentAdd.massDiff)/currentAdd.numMol;
+      if(isocharge != 0) {
+        // if mz is an isotopic feature with assigned charge
+	mass = -1.0;
+	if(std::abs(currentAdd.charge) == isocharge) {
+	  // only annotate adduct if the charge of the isotopic feature is equal to the charge of the putative adduct
+	  mass = (mz*std::abs(currentAdd.charge) - currentAdd.massDiff)/currentAdd.numMol;
+	}
+      } else {
+	mass = (mz*std::abs(currentAdd.charge) - currentAdd.massDiff)/currentAdd.numMol;
+      }
       if(mass > 0) {
 	mass = round(mass*10000)/10000;
 	if(annotD.massList.find(mass) == annotD.massList.end() ) {
@@ -347,7 +381,8 @@ annotData getannotData(rawadList rList, annotDF& mzdf, double tol = 0.00001, dou
 	    for(std::unordered_map<int, std::string>::iterator itu = adduMap.begin();
 		itu != adduMap.end(); itu++) {
 	      // update massList
-	      massPair = std::make_pair(itu->first, itu->second);
+	      massPair.first = itu->first;
+	      massPair.second = itu->second;
 	      annotD.massList[mass].push_back(massPair);
 	      // update at which features is this mass
 	      annotD.feat2mass[itu->first].push_back(mass);
@@ -406,6 +441,7 @@ std::unordered_set<double> getTopScoringMasses(annotData& annotD, int anG, rawad
   std::unordered_set<double> setm;
   std::vector<std::pair<double, double> > topF, allM, topT;
   std::unordered_map<double, std::pair<double, double> > mass2score;
+  std::pair<double, double> mass2scoreEntry;
   adInfo adI;
   //double minsert;
   // First compute the score for all the masses in the anGroup
@@ -419,7 +455,9 @@ std::unordered_set<double> getTopScoringMasses(annotData& annotD, int anG, rawad
       }
       //add the compensation for empty annotations
       score += emptyS*(annotD.anGroups[anG].size() - annotD.anGroup2mass[anG][itm->first].size());
-      mass2score[itm->first] = std::make_pair(score, itm->first);
+      mass2scoreEntry.first = score;
+      mass2scoreEntry.second = itm->first;
+      mass2score[itm->first] = mass2scoreEntry;
   }
   // Second select the top masses independently of the feature for that group
   for(std::unordered_map<double, std::pair<double, double> >::iterator itm1 = mass2score.begin();
@@ -457,6 +495,8 @@ Annotation annotateMass(annotData& annotD, std::unordered_set<int> features, raw
   double score, topmass;
   adInfo adI;
   std::vector<std::pair<double, double> > mass2score; // first is the score, second is the mass
+  std::pair<double, double> mass2scoreEntry; // entry for mass2score unordered map
+  std::pair<double, std::string> anEntry; // entry for an
   std::unordered_set<int> freef;
   // 1 - for each mass in setm compute the score for the features if that features are more than in two positions
   for(std::unordered_set<double>::iterator itm = setm.begin(); itm != setm.end(); itm++) {
@@ -474,15 +514,21 @@ Annotation annotateMass(annotData& annotD, std::unordered_set<int> features, raw
 	}
       }
     }
-    if(count > 1)
-      mass2score.push_back(std::make_pair(score, *itm));
+    if(count > 1) {
+      mass2scoreEntry.first = score;
+      mass2scoreEntry.second = *itm;
+      mass2score.push_back(mass2scoreEntry);
+    }
   }
   
   // if there is no annotation for the features, return an empty score
   if( mass2score.size() < 1 ) {
     an.score = emptySlog*features.size();
-    for(std::unordered_set<int>::iterator itf = features.begin(); itf != features.end(); itf++)
-      an.annotation[*itf] = std::make_pair(0,"");
+    for(std::unordered_set<int>::iterator itf = features.begin(); itf != features.end(); itf++) {
+      anEntry.first = 0;
+      anEntry.second = "";
+      an.annotation[*itf] = anEntry;
+    }
     return(an);
   }
   // 2 - sort annotation and select the adducts of that annotation
@@ -497,9 +543,11 @@ Annotation annotateMass(annotData& annotD, std::unordered_set<int> features, raw
     for(std::vector<std::pair<int, std::string> >::iterator itp = annotD.massList[topmass].begin();
 	itp != annotD.massList[topmass].end(); itp++) {
       // if this mass contains the feature itf, include it in the annotation
-      if(itp->first == *itf)
-	an.annotation[*itf] = std::make_pair(topmass, itp->second); // mass and adduct
-	
+      if(itp->first == *itf) {
+	anEntry.first = topmass;
+	anEntry.second = itp->second;
+      	an.annotation[*itf] = anEntry; // mass and adduct
+      }
     }
   }
   // now put the features out of the annotation in the freef
@@ -523,7 +571,9 @@ Annotation annotateMass(annotData& annotD, std::unordered_set<int> features, raw
     if( freef.size() == 1 ) {
       an.score += emptySlog;
       auto it = freef.begin();
-      an.annotation[*it] = std::make_pair(0,"");
+      anEntry.first = 0;
+      anEntry.second = "";
+      an.annotation[*it] = anEntry;
     }
   }
   return(an);
@@ -547,6 +597,7 @@ bool compareAnnotation(int id1, int id2, std::unordered_map<int, Annotation>& an
 
 void dropRepeatedAnnotations(std::unordered_map<int, Annotation>& annotations) {
   pairA badA;
+  std::pair<int,int> badAEntry;
   double score1, score2;
   int id1,id2;
   std::unordered_set<int> dropA;
@@ -559,9 +610,13 @@ void dropRepeatedAnnotations(std::unordered_map<int, Annotation>& annotations) {
 	if(score1 == score2) {
 	  // if itm1->first annotation is bigger
 	  if(itm1->first > itm2->first) {
-	    badA.insert(std::make_pair(itm2->first, itm1->first));
+	    badAEntry.first = itm2->first;
+	    badAEntry.second = itm1->first;
+	    badA.insert(badAEntry);
 	  } else{
-	    badA.insert(std::make_pair(itm1->first, itm2->first));
+	    badAEntry.first = itm1->first;
+	    badAEntry.second = itm2->first;
+	    badA.insert(badAEntry);
 	  }
 	}
       }
@@ -592,12 +647,15 @@ std::unordered_map<int, Annotation> AnnotateMassLoop(annotData& annotD, std::uno
     std::unordered_set<int> freef;
     std::unordered_set<double> setm2 = setm;
     Annotation an, anfree;
+    std::pair<double, std::string> anEntry; // entry for an
     for(std::unordered_set<int>::iterator itf = features.begin(); itf != features.end(); itf++) {
       for(std::vector<std::pair<int, std::string> >::iterator itp = annotD.massList[*itm].begin();
 	itp != annotD.massList[*itm].end(); itp++) {
 	// if this mass contains the feature itf, include it in the annotation
     	if(itp->first == *itf) {
-	  an.annotation[*itf] = std::make_pair(*itm, itp->second); // mass and adduct
+	  anEntry.first = *itm;
+	  anEntry.second = itp->second;
+	  an.annotation[*itf] = anEntry; // mass and adduct
 	  adI = rList.rawlist[itp->second];
 	  an.score += adI.freq;
 	}
@@ -626,7 +684,9 @@ std::unordered_map<int, Annotation> AnnotateMassLoop(annotData& annotD, std::uno
       if( freef.size() == 1 ) {
 	an.score += log10(emptyS);
 	auto it = freef.begin();
-	an.annotation[*it] = std::make_pair(0,"");
+	anEntry.first = 0;
+	anEntry.second = "";
+	an.annotation[*it] = anEntry;
       }
     }
   // 4 - Include this annotation in the map
@@ -641,10 +701,14 @@ std::unordered_map<int, Annotation> AnnotateMassLoop(annotData& annotD, std::uno
 
 std::vector<int> sortAnnotations(std::unordered_map<int, Annotation>& annotations, int top) {
   std::vector<std::pair<double, int> > allAn;
+  std::pair<double, int> allAnEntry;
   std::vector<int> topAn;
   
-  for(std::unordered_map<int, Annotation>::iterator ita = annotations.begin(); ita != annotations.end(); ita++)
-    allAn.push_back(std::make_pair(annotations[ita->first].score, ita->first));
+  for(std::unordered_map<int, Annotation>::iterator ita = annotations.begin(); ita != annotations.end(); ita++) {
+    allAnEntry.first = annotations[ita->first].score;
+    allAnEntry.second = ita->first;
+    allAn.push_back(allAnEntry);
+  }
   sort(allAn.begin(), allAn.end(), compareint);
   for(int id = 0; id < top; id++) {
     if(id < allAn.size() )

@@ -229,7 +229,7 @@ msSet &lt;- xcms::xcmsSet(files = mzfile, method = &quot;centWave&quot;, ppm = 1
 
 <pre><code class="r">ex.anClique &lt;- anClique(msSet)
 summary(ex.anClique)
-#&gt; anClique object with 276 features
+#&gt; anClique object with 275 features
 #&gt; No computed clique groups
 #&gt; No isotope annotation
 #&gt; No adduct annotation
@@ -269,15 +269,15 @@ set.seed(2)
 ex.cliqueGroups &lt;- getCliques(msSet, filter = TRUE)
 #&gt; Creating anClique object
 #&gt; Creating network
-#&gt; Features filtered: 1 
+#&gt; Features filtered: 0 
 #&gt; Computing cliques
 #&gt; Beggining value of logl is -1114.05 
-#&gt; Aggregate cliques done, with 386 rounds
-#&gt; Kernighan-Lin done with 3 rounds
-#&gt; Finishing value of logl is -253.498
+#&gt; Aggregate cliques done, with 389 rounds
+#&gt; Kernighan-Lin done with 2 rounds
+#&gt; Finishing value of logl is -253.193
 summary(ex.cliqueGroups)
 #&gt; anClique object with 275 features
-#&gt; Features have been splitted into 69 cliques
+#&gt; Features have been splitted into 70 cliques
 #&gt; No isotope annotation
 #&gt; No adduct annotation
 </code></pre>
@@ -301,7 +301,7 @@ If we now look at the <code>summary</code> of the resulting <code>anClique</code
 #&gt; Updating anClique object
 summary(ex.Isotopes)
 #&gt; anClique object with 275 features
-#&gt; Features have been splitted into 69 cliques
+#&gt; Features have been splitted into 70 cliques
 #&gt; 83 Features are isotopes
 #&gt; No adduct annotation
 </code></pre>
@@ -348,9 +348,9 @@ summary(ex.Isotopes)
 #&gt; Annotation computed, updating peaklist
 summary(ex.Adducts)
 #&gt; anClique object with 275 features
-#&gt; Features have been splitted into 69 cliques
+#&gt; Features have been splitted into 70 cliques
 #&gt; 83 Features are isotopes
-#&gt; 177 features annotated
+#&gt; 175 features annotated
 </code></pre>
 
 <p>As we see from the <code>summary</code> output, 178 of 275 features have annotation. Function <code>getAnnotation</code> requires as input an adduct list, the parameter <code>adinfo</code>. Users can use the default adduct list <code>positive.adinfo</code> for positive charged adducts and <code>and negative.adinfo</code> for negative charged adducts. <code>polarity</code> must be set, either to <code>positive</code> or <code>negative</code>. Lots of neutral masses are found when the clique groups have many features. In those cases, scoring all annotations could take much time as there are many possible combinations. To prevent this, neutral masses that likely will be in the final top annotations are selected and annotation is computed quickly. The selected masses have the highest frequency adducts and the largest number of adducts.
@@ -361,28 +361,28 @@ For each clique group, all neutral masses are ordered depending on their score. 
 <pre><code class="r">features.clique6 &lt;- ex.Adducts$cliques[[6]]
 head(ex.Adducts$peaklist[features.clique6,
     c(&quot;an1&quot;,&quot;mass1&quot;,&quot;an2&quot;, &quot;mass2&quot;, &quot;an3&quot;, &quot;mass3&quot;, &quot;an4&quot;, &quot;mass4&quot;, &quot;an5&quot;, &quot;mass5&quot;)], n = 10)
-#&gt;           an1    mass1      an2    mass2        an3    mass3        an4
-#&gt; 37                  NA   [M+K]+ 242.0805     [M+K]+ 242.0805  [M+H+K]2+
-#&gt; 38     [M+H]+ 484.1610  [2M+H]+ 242.0805 [M+H-H2O]+ 502.1711 [M+H-NH3]+
-#&gt; 39   [M+NH4]+ 484.1610                NA                  NA     [M+H]+
-#&gt; 40     [M+K]+ 484.1610  [2M+K]+ 242.0805 [M+K-H2O]+ 502.1711     [M+H]+
-#&gt; 41   [Cat-H]+ 105.0583  [Cat]2+ 208.1014    [Cat]2+ 208.1014   [Cat-H]+
-#&gt; 42  [M+H-OH]+ 216.0768   [M+H]+ 199.0745     [M+H]+ 199.0745     [M+H]+
-#&gt; 43                  NA                NA [M+H+H2O]+ 282.0728 [M+H+H2O]+
-#&gt; 44     [Cat]+ 118.0649   [Cat]+ 118.0649     [Cat]+ 118.0649     [Cat]+
-#&gt; 45 [Cat-H2O]+ 216.0768 [Cat-H]+ 199.0745   [Cat-H]+ 199.0745   [Cat-H]+
-#&gt; 46  [M+2Na]2+ 484.1610  [M+Na]+ 242.0805 [M+H-H2O]+ 282.0728 [M+H-H2O]+
-#&gt;       mass4        an5    mass5
-#&gt; 37 522.1188  [M+H+K]2+ 522.1188
-#&gt; 38 501.1876    [M+Na]+ 462.1791
-#&gt; 39 501.1876                  NA
-#&gt; 40 522.1188     [M+H]+ 522.1188
-#&gt; 41 105.0583   [Cat-H]+ 105.0583
-#&gt; 42 199.0745     [M+H]+ 199.0745
-#&gt; 43 282.0728 [M+H+H2O]+ 282.0728
-#&gt; 44 118.0649     [Cat]+ 118.0649
-#&gt; 45 199.0745   [Cat-H]+ 199.0745
-#&gt; 46 282.0728 [M+H-H2O]+ 282.0728
+#&gt;               an1    mass1        an2    mass2        an3    mass3
+#&gt; 43.13      [M+K]+ 242.0805                  NA                  NA
+#&gt; 43.151    [2M+H]+ 242.0805     [M+H]+ 484.1605 [M+H-H2O]+ 502.1711
+#&gt; 43.16                   NA   [M+NH4]+ 484.1605                  NA
+#&gt; 43.18     [2M+K]+ 242.0805     [M+K]+ 484.1605 [M+K-H2O]+ 502.1711
+#&gt; 43.4     [Cat-H]+ 105.0583    [Cat]2+ 208.1014    [Cat]2+ 208.1014
+#&gt; 43.10   [M+H-OH]+ 216.0768     [M+H]+ 199.0745     [M+H]+ 199.0745
+#&gt; 43.14                   NA                  NA                  NA
+#&gt; 43.6       [Cat]+ 118.0649     [Cat]+ 118.0649     [Cat]+ 118.0649
+#&gt; 43.91  [Cat-H2O]+ 216.0768   [Cat-H]+ 199.0745   [Cat-H]+ 199.0745
+#&gt; 43.121    [M+Na]+ 242.0805 [M-H+2Na]+ 220.0986 [M-H+2Na]+ 220.0986
+#&gt;               an4    mass4         an5    mass5
+#&gt; 43.13     [2M+K]+ 121.0403  [M+K-H2O]+ 260.0911
+#&gt; 43.151 [M+H-NH3]+ 501.1871  [M+H-NH3]+ 501.1871
+#&gt; 43.16      [M+H]+ 501.1871      [M+H]+ 501.1871
+#&gt; 43.18      [M+K]+ 484.1605      [M+K]+ 484.1605
+#&gt; 43.4     [Cat-H]+ 105.0583    [Cat-H]+ 105.0583
+#&gt; 43.10      [M+H]+ 199.0745      [M+H]+ 199.0745
+#&gt; 43.14                   NA                   NA
+#&gt; 43.6       [Cat]+ 118.0649      [Cat]+ 118.0649
+#&gt; 43.91    [Cat-H]+ 199.0745    [Cat-H]+ 199.0745
+#&gt; 43.121   [2M+Na]+ 121.0403 [M+Na-H2O]+ 260.0911
 </code></pre>
 
 <p>Now we have obtained the neutral mass and the adduct annotation for our features. We could use the neutral mass together with the retention time and MS/MS data to annotate more confidently some of these metabolites. We also know how many features in the dataset are isotopes. Finally, we have achieved a reduction in the complexity of our the dataset, from many features to a signficant smaller number annotated neutral masses that have different adducts and isotopes.</p>
