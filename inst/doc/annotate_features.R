@@ -7,16 +7,18 @@ knitr::opts_chunk$set(
 ## ----message=FALSE, xcms-------------------------------------------------
 library(cliqueMS)
 mzfile <- system.file("standards.mzXML", package = "cliqueMS")
-msSet <- xcms::xcmsSet(files = mzfile, method = "centWave", ppm = 15, peakwidth = c(5,20), snthresh = 10)
+mzraw <- MSnbase::readMSData(files = mzfile, mode = "onDisk")
+cpw <- xcms::CentWaveParam(ppm = 15, peakwidth = c(5,20), snthresh = 10)
+mzData <- xcms::findChromPeaks(mzraw, cpw)
 
 ## ----anclique------------------------------------------------------------
-ex.anClique <- anClique(msSet)
+ex.anClique <- createanClique(mzData)
 summary(ex.anClique)
 
 ## ----cliquefind, include = TRUE------------------------------------------
 library(cliqueMS)
 set.seed(2)
-ex.cliqueGroups <- getCliques(msSet, filter = TRUE)
+ex.cliqueGroups <- getCliques(mzData, filter = TRUE)
 summary(ex.cliqueGroups)
 
 ## ----isotopes, include = TRUE--------------------------------------------
