@@ -1,3 +1,8 @@
+0.3.1
+
+Vignette modified due to new 'xcsm'
+package, inside new R version 3.6.
+
 0.3.0
 
 New methods for functions 'anClique' and 'createNetwork'.

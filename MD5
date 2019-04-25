@@ -1,6 +1,6 @@
-941db0b1252fce7cb23328d2dcacd67c *DESCRIPTION
+46e119fb6309a384dc2cfd868ad12b89 *DESCRIPTION
 4b07ea152563a0f6019c5f481bc5353c *NAMESPACE
-972b6b4f803f78902f69964d76041a36 *NEWS.md
+d7c1e79759803eba6a273853369d3c97 *NEWS.md
 ac3d5f56685ad603dc34fb51d47e04b7 *R/RcppExports.R
 9d08b84e99a16a41eabbc1c5490afac1 *R/allClasses.R
 dab049faade04b760d293867f25496f2 *R/buildNetwork.R
@@ -12,14 +12,14 @@ f055797e9dcf3bb109c9f421506fdd0c *R/findCliques.R
 b4fc4bf861c674ba531c1f770c7180ff *R/negative.adinfo.R
 98c087b5807e9e66fc76a12c1977d784 *R/positive.adinfo.R
 a398a0ea5304943694508cc4ceb36577 *README.md
-c95a34787264ea35eb6f07aa3de8913c *build/vignette.rds
+21604ac6cfb414b8032c9f7a579c2f3a *build/vignette.rds
 5dd42b18a3389156ed21e3c2196b4d68 *data/ex.cliqueGroups.RData
 6d3555ff96c9352100c83321d645101e *data/negative.adinfo.RData
 7233038b710b9dc55a1de4fdebffcaa6 *data/positive.adinfo.RData
 737212540fdc60b7d1bfc70cee0121ad *inst/CITATION
-13cfb554dc3cd4895ceb0c915bf24d78 *inst/doc/annotate_features.R
-14f6782ec202fc8643f4291987e59300 *inst/doc/annotate_features.Rmd
-0df0574ad350b2120a03a213b2d26049 *inst/doc/annotate_features.html
+bea140766ba1fec37bbdf767ce3ea27c *inst/doc/annotate_features.R
+1d1b47e7f9797a59062654cd702be933 *inst/doc/annotate_features.Rmd
+8f46b468a82de7f664e647d4d7f6cf53 *inst/doc/annotate_features.html
 a4a76c82585d54f835fee5d580ae9b78 *inst/standards.mzXML
 42a9779a0082084a09c746c104c03cc6 *man/anClique.Rd
 3eb548651297c5fd457fe2c18fb69e10 *man/cliqueMS.Rd
@@ -50,4 +50,4 @@ ef689e19e2f8339daa51979231d01ebf *man/getCliques.Rd
 ce56eb781554d693b7223b517dcb9197 *tests/testthat/test_cliques.R
 182518f6628911875f456a31c8bd3788 *tests/testthat/test_isotopes.R
 fc7994584e9c10a8e3a7d64ac901d55d *tests/testthat/test_network.R
-14f6782ec202fc8643f4291987e59300 *vignettes/annotate_features.Rmd
+1d1b47e7f9797a59062654cd702be933 *vignettes/annotate_features.Rmd

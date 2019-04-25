@@ -222,9 +222,10 @@ hr {
 
 <pre><code class="r">library(cliqueMS)
 mzfile &lt;- system.file(&quot;standards.mzXML&quot;, package = &quot;cliqueMS&quot;)
-mzraw &lt;- MSnbase::readMSData(files = mzfile, mode = &quot;onDisk&quot;)
-cpw &lt;- xcms::CentWaveParam(ppm = 15, peakwidth = c(5,20), snthresh = 10)
-mzData &lt;- xcms::findChromPeaks(mzraw, cpw)
+library(xcms)
+mzraw &lt;- readMSData(files = mzfile, mode = &quot;onDisk&quot;)
+cpw &lt;- CentWaveParam(ppm = 15, peakwidth = c(5,20), snthresh = 10)
+mzData &lt;- findChromPeaks(object = mzraw, param = cpw)
 </code></pre>
 
 <p>Then we can create an <code>anClique</code> object:</p>
@@ -266,8 +267,7 @@ summary(ex.anClique)
 
 <p>With the function <code>getCliques</code> we assign clique groups to our features. This function creates the network of similarity and then computes the clique groups. As input data it uses a <code>xcmsSet</code> object. <code>getCliques</code> outputs an <code>anClique</code> S3 object, which will be used to store all annotation steps.</p>
 
-<pre><code class="r">library(cliqueMS)
-set.seed(2)
+<pre><code class="r">set.seed(2)
 ex.cliqueGroups &lt;- getCliques(mzData, filter = TRUE)
 #&gt; Creating anClique object
 #&gt; Creating network
